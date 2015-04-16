@@ -1,0 +1,7 @@
+# Ginocchiate counter
+
+
+1) fare composer install
+2) accedere alla cartella web ed eseguire
+php -S localhost:9000
+3) accedere dal browser a http://localhost:9000
