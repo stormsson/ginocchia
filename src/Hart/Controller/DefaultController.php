@@ -34,7 +34,9 @@ class DefaultController
             "E per tutti il dolore degli altri | è dolore a metà. - Fabrizio De André",
             "Là dove cresce il dolore è terra benedetta. - Oscar Wilde",
             "Il bello della musica è che quando ti colpisce non senti dolore. - Bob Marley",
-            "Tutti gli uomini sanno dare consigli e conforto al dolore che non provano. - William Shakespeare"
+            "Tutti gli uomini sanno dare consigli e conforto al dolore che non provano. - William Shakespeare",
+            "Un'ora breve di dolore c'impressiona lungamente; un giorno sereno passa e non lascia traccia. - Luigi Pirandello",
+            "Mai fidarsi delle citazioni prese da internet - Abraham Lincoln",
         );
 
         $index = mt_rand(0, count($aforismi) -1);
