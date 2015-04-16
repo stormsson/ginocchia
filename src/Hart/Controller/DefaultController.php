@@ -25,6 +25,23 @@ class DefaultController
         return $total;
     }
 
+
+    public function getAforisma()
+    {
+        $aforismi = array(
+            "Guardare da vicino il proprio dolore è un modo di consolarsi. - Stendhal",
+            "Se il vero dolore consistesse in uno schiaffo... - Carlos Ruiz Zafón",
+            "E per tutti il dolore degli altri | è dolore a metà. - Fabrizio De André",
+            "Là dove cresce il dolore è terra benedetta. - Oscar Wilde",
+            "Il bello della musica è che quando ti colpisce non senti dolore. - Bob Marley",
+            "Tutti gli uomini sanno dare consigli e conforto al dolore che non provano. - William Shakespeare"
+        );
+
+        $index = mt_rand(0, count($aforismi) -1);
+
+        return $aforismi[$index];
+    }
+
     public function index(Request $request, Application $app)
     {
 
@@ -49,7 +66,7 @@ class DefaultController
 
         if ($result) {
             return $app->json(array(
-                'message'=>'ok',
+                'message'=> $this->getAforisma(),
                 'count'=>$count
             ), 201);
         } else {
