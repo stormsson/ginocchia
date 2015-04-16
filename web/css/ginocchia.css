@@ -1,0 +1,40 @@
+body {
+	font-family: Arial, Helvetica, Sans-serif
+}
+
+#supercounter {
+	border: 1px solid #c00;
+	position: relative;
+	width: 500px;
+	height: 80px;
+	overflow: hidden;
+}
+#supercounter div {
+	position: absolute;
+	top: 0;
+	width: 60px;
+	height: 800px;
+	background-color: #eee;
+}
+
+#supercounter div#digit_0 {
+	left: 0;
+}
+#supercounter div#digit_1 {
+	left: 70px;
+}
+#supercounter div#digit_2 {
+	left: 140px;
+}
+#supercounter div#digit_3 {
+	left:210px;
+}
+
+#supercounter div span {
+	display: block;
+	width: 80px;
+	height: 80px;
+	font-size: 72px;
+	float: left;
+	clear: both;
+}

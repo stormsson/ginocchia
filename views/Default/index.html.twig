@@ -9,6 +9,58 @@
     <a href="#" id="ahi">Anche io :( </a>
 
 
+    <div id="supercounter">
+    	<div id="digit_0">
+    		<span>0</span>
+    		<span>1</span>
+    		<span>2</span>
+    		<span>3</span>
+    		<span>4</span>
+    		<span>5</span>
+    		<span>6</span>
+    		<span>7</span>
+    		<span>8</span>
+    		<span>9</span>
+    	</div>
+    	<div id="digit_1">
+    		<span>0</span>
+    		<span>1</span>
+    		<span>2</span>
+    		<span>3</span>
+    		<span>4</span>
+    		<span>5</span>
+    		<span>6</span>
+    		<span>7</span>
+    		<span>8</span>
+    		<span>9</span>
+    	</div>
+    	<div id="digit_2">
+    		<span>0</span>
+    		<span>1</span>
+    		<span>2</span>
+    		<span>3</span>
+    		<span>4</span>
+    		<span>5</span>
+    		<span>6</span>
+    		<span>7</span>
+    		<span>8</span>
+    		<span>9</span>
+    	</div>
+    	<div id="digit_3">
+    		<span>0</span>
+    		<span>1</span>
+    		<span>2</span>
+    		<span>3</span>
+    		<span>4</span>
+    		<span>5</span>
+    		<span>6</span>
+    		<span>7</span>
+    		<span>8</span>
+    		<span>9</span>
+    	</div>
+    </div>
+
+
 
     <script>
     function pad(n, width, z) {
@@ -18,14 +70,21 @@
 	}
     $(function(){
 
-    	alert(pad({{ count }},4))
+    	var supercounter_str = pad({{ count }},4);
+
+    	for (var i = 0; i < supercounter_str.length; i++) {
+		    console.log(supercounter_str.charAt(i));
+		    var altezza = -(80*supercounter_str.charAt(i));
+		    $('#digit_' + i).animate({'top': altezza + 'px'});
+
+		}
 
         $('#ahi').on('click',function(){
             $.ajax('{{ app.url_generator.generate('post_count') }}',{
                 type:'POST',
                 success: function(data, textStatus, jqXHR) {
                     $('#counter').html(data['count']);
-                    alert(pad(data['count'],4) + " | " + data['message']);
+                    // alert(pad(data['count'],4) + " | " + data['message']);
 
                 }
 
