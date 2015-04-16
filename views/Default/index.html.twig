@@ -11,12 +11,22 @@
 
 
     <script>
+    function pad(n, width, z) {
+	  z = z || '0';
+	  n = n + '';
+	  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+	}
     $(function(){
+
+    	alert(pad({{ count }},4))
+
         $('#ahi').on('click',function(){
             $.ajax('{{ app.url_generator.generate('post_count') }}',{
                 type:'POST',
                 success: function(data, textStatus, jqXHR) {
                     $('#counter').html(data['count']);
+                    alert(pad(data['count'],4) + " | " + data['message']);
+
                 }
 
             }
