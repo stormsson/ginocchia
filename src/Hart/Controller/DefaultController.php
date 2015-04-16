@@ -16,17 +16,23 @@ class DefaultController
 {
     const STARTING_COUNTER = 10;
 
-    public function index(Request $request, Application $app)
+    protected function getCount($app)
     {
-
         $sql = "SELECT count(*) as total FROM events ";
         $count = $app['db']->fetchAssoc($sql);
 
         $total = self::STARTING_COUNTER + $count['total'];
+        return $total;
+    }
+
+    public function index(Request $request, Application $app)
+    {
+
+        $count = $this->getCount($app);
 
         return $app['twig']->render('Default/index.html.twig', array(
             'name' => "pippo",
-            'count' => $total
+            'count' => $count
         ));
     }
 
@@ -39,10 +45,17 @@ class DefaultController
             $result = false;
         }
 
+        $count = $this->getCount($app);
+
         if ($result) {
-            return $app->json(array('message'=>'ok'), 201);
+            return $app->json(array(
+                'message'=>'ok',
+                'count'=>$count
+            ), 201);
         } else {
-            return $app->json(array('message'=>'bad request'), 400);
+            return $app->json(array(
+                'message'=>'bad request'
+            ), 400);
         }
     }
 

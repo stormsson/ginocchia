@@ -1,10 +1,28 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-    <h1>Sono state date {{ count }} ginocchiate </h1>
-
+    <h1>Sono state date <span id="counter">{{ count }}</span> ginocchiate </h1>
+<br/><br/>
     <a href="{{ app.url_generator.generate('homepage') }}">HOME</a>
-    <a href="{{ app.url_generator.generate('history') }}">History</a>
+    <br/><br/>
+    <a href="{{ app.url_generator.generate('history') }}">History</a><br/><br/>
 
-    url per la chiamata ajax: fare una POST a {{ app.url_generator.generate('post_count') }}
+    <a href="#" id="ahi">Anche io :( </a>
+
+
+
+    <script>
+    $(function(){
+        $('#ahi').on('click',function(){
+            $.ajax('{{ app.url_generator.generate('post_count') }}',{
+                type:'POST',
+                success: function(data, textStatus, jqXHR) {
+                    $('#counter').html(data['count']);
+                }
+
+            }
+            );
+        });
+    });
+    </script>
 {% endblock %}
 

@@ -22,8 +22,6 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-
-
 $app['debug'] = true;
 
 
