@@ -1,12 +1,10 @@
-<html>
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-</head>
-    <body>
-        <h1>Sono state date {{ count }} ginocchiate </h1>
+{% extends "layout.html.twig" %}
+{% block content %}
+    <h1>Sono state date {{ count }} ginocchiate </h1>
 
-        <a href="{{ app.url_generator.generate('homepage') }}">HOME</a>
+    <a href="{{ app.url_generator.generate('homepage') }}">HOME</a>
+    <a href="{{ app.url_generator.generate('history') }}">History</a>
 
-        url per la chiamata ajax: fare una POST a {{ app.url_generator.generate('post_count') }}
-    </body>
-</html>
+    url per la chiamata ajax: fare una POST a {{ app.url_generator.generate('post_count') }}
+{% endblock %}
+

@@ -34,6 +34,11 @@ $app->get(
     'Hart\Controller\DefaultController::index'
 )->bind('homepage');
 
+$app->get(
+    '/history',
+    'Hart\Controller\DefaultController::history'
+)->bind('history');
+
 $app->post(
     '/count',
     'Hart\Controller\DefaultController::count'
