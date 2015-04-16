@@ -30,7 +30,23 @@ class DefaultController
     public function count(Request $request, Application $app)
     {
         $sql = "INSERT INTO events (id, user, created_at) VALUES (NULL, NULL, CURRENT_TIMESTAMP);";
-        $result = $app['db']->executeUpdate($sql);
-        die('count');
+        try {
+            $result = $app['db']->executeUpdate($sql);
+        } catch (\Exception $e) {
+            $result = false;
+        }
+
+        if ($result) {
+            return $app->json(array('message'=>'ok'), 201);
+        } else {
+            return $app->json(array('message'=>'bad request'), 400);
+        }
+    }
+
+    public function history(Request $request, Application $app)
+    {
+        return $app['twig']->render('Default/history.html.twig', array(
+
+        ));
     }
 }
