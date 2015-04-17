@@ -68,23 +68,27 @@
 	  n = n + '';
 	  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 	}
+
+    function doAnimation(count) {
+        var supercounter_str = pad(count,4);
+
+        for (var i = 0; i < supercounter_str.length; i++) {
+            //console.log(supercounter_str.charAt(i));
+            var altezza = -(80*supercounter_str.charAt(i));
+            $('#digit_' + i).animate({'top': altezza + 'px'},1000);
+
+        }
+    }
+
     $(function(){
-
-    	var supercounter_str = pad({{ count }},4);
-
-    	for (var i = 0; i < supercounter_str.length; i++) {
-		    console.log(supercounter_str.charAt(i));
-		    var altezza = -(80*supercounter_str.charAt(i));
-		    $('#digit_' + i).animate({'top': altezza + 'px'},1000);
-
-		}
+        doAnimation({{count}});
 
         $('#ahi').on('click',function(){
             $.ajax('{{ app.url_generator.generate('post_count') }}',{
                 type:'POST',
                 success: function(data, textStatus, jqXHR) {
                     $('#counter').html(data['count']);
-                    // alert(pad(data['count'],4) + " | " + data['message']);
+                    doAnimation(data['count']);
 
                 }
 
