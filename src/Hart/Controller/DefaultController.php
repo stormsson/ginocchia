@@ -3,6 +3,7 @@ namespace Hart\Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Hart\Utils\Utils;
 
 /**
  * per info su come fare query:

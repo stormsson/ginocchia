@@ -18,7 +18,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'dbname' => 'ginocchia',
         'host' => 'localhost',
         'user' => 'root',
-        'password' => 'root',
+        'password' => 'pita725ewq',
     ),
 ));
 
@@ -41,5 +41,15 @@ $app->post(
     '/count',
     'Hart\Controller\DefaultController::count'
 )->bind('post_count');
+
+$app->get(
+    '/fb-login-template',
+    'Hart\Controller\FacebookController::fbLoginTemplate'
+)->bind('fb_login_template');
+
+$app->post(
+    '/fb-login',
+    'Hart\Controller\FacebookController::fbLogin'
+)->bind('fb_login');
 
 $app->run();
