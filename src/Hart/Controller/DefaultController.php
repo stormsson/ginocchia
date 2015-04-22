@@ -4,6 +4,7 @@ namespace Hart\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Hart\Utils\Utils;
+use Hart\Manager\UserManager;
 
 /**
  * per info su come fare query:
@@ -47,7 +48,7 @@ class DefaultController
 
     public function index(Request $request, Application $app)
     {
-
+var_dump(UserManager::getSessionToken($app));
         $count = $this->getCount($app);
 
         return $app['twig']->render('Default/index.html.twig', array(
@@ -58,7 +59,14 @@ class DefaultController
 
     public function count(Request $request, Application $app)
     {
-        $sql = "INSERT INTO events (id, user, created_at) VALUES (NULL, NULL, CURRENT_TIMESTAMP);";
+        if($user_logged = UserManager::getSessionToken($app)) {
+            $user_id = $user_logged['user_id'];
+        } else {
+            $user_id = 'NULL';
+        }
+
+        $sql = "INSERT INTO events (id, user, created_at) VALUES (NULL, $user_id, CURRENT_TIMESTAMP);";
+
         try {
             $result = $app['db']->executeUpdate($sql);
         } catch (\Exception $e) {

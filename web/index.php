@@ -18,9 +18,11 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'dbname' => 'ginocchia',
         'host' => 'localhost',
         'user' => 'root',
-        'password' => 'pita725ewq',
+        'password' => 'root'
     ),
 ));
+
+$app->register(new Silex\Provider\SessionServiceProvider());
 
 $app['debug'] = true;
 
@@ -51,5 +53,10 @@ $app->post(
     '/fb-login',
     'Hart\Controller\FacebookController::fbLogin'
 )->bind('fb_login');
+
+$app->get(
+    '/fb-logout',
+    'Hart\Controller\FacebookController::fbLogout'
+)->bind('fb_logout');
 
 $app->run();

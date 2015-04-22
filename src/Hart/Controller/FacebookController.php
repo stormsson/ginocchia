@@ -1,25 +1,14 @@
 <?php
 namespace Hart\Controller;
 
+use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Hart\Utils\Utils;
-
-/**
- * per info su come fare query:
- * http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html
- *
- * per info su come usare twig
- * http://silex.sensiolabs.org/doc/providers/twig.html#usage
- */
+use Hart\Manager\UserManager;
 
 class FacebookController
 {
-    public function fbLoginTemplate(Request $request, Application $app)
-    {
-        return $app['twig']->render('Default/fb-login-template.html.twig', array());
-    }
-
     /**
      * Verify if the user is logged also in the server app
      * @param Request $request
@@ -39,31 +28,47 @@ class FacebookController
                     //creo l'utente in db se non lo trovo
                     if(!$app_user) {
                         $sql = "INSERT INTO users (first_name, facebook_id, created_at) VALUES ('$fb_user->first_name', '$fb_user->id', CURRENT_TIMESTAMP);";
-                        $result = $app['db']->executeUpdate($sql);
-                    } else {
-                        $result = true;
+                        if($app['db']->executeUpdate($sql)) {
+                            $app_user = array();
+                            $app_user['id'] = $fb_user->id;
+                            $app_user['first_name'] = $fb_user->first_name;
+                            $app_user['facebook_id'] = $fb_user->facebook_id;
+                        }
                     }
                 } catch (\Exception $e) {
-                    $result = false;
+                    $app_user = false;
                 }
             } else {
-                $result = false;
+                $app_user = false;
             }
-            return $result;
+
+            return $app_user;
         }
     }
 
     public function fbLogin(Request $request, Application $app)
     {
-        $result = $this->processFbLogin($request, $app);
+        $user = $this->processFbLogin($request, $app);
 
-        if($result) {
-            $this->setCookie($result->first_name.'*'.$result->id);
+        if ($user) {
+
+            $result = UserManager::setSessionToken($app, $user);
+
+            return $app->json(array(
+                'message'=> 'ok',
+            ), 201);
+        } else {
+
+            return $app->json(array(
+                'message'=>'bad request'
+            ), 400);
         }
     }
 
-    protected function setCookie($cookie_value)
+    public function fbLogout(Request $request, Application $app)
     {
-        setcookie('ginocchia_cookie', $cookie_value, time()+3600, '/');  /* expire in 1 hour */
+        $result = UserManager::deleteSessionToken($app);
+
+        return $app->redirect('/');
     }
 }
