@@ -18,7 +18,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'dbname' => 'ginocchia',
         'host' => 'localhost',
         'user' => 'root',
-        'password' => 'root'
+        'password' => 'pita725ewq'
     ),
 ));
 

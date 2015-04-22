@@ -5,6 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Hart\Utils\Utils;
 use Hart\Manager\UserManager;
+use Hart\Query\EventsQuery;
 
 /**
  * per info su come fare query:
@@ -20,13 +21,18 @@ class DefaultController
 
     protected function getCount($app)
     {
-        $sql = "SELECT count(*) as total FROM events ";
-        $count = $app['db']->fetchAssoc($sql);
+        $count = EventsQuery::countEvents($app);
 
         $total = self::STARTING_COUNTER + $count['total'];
+
         return $total;
     }
 
+    protected function getUserCount($user_id, $app)
+    {
+        $count = EventsQuery::countEventsByUser($user_id, $app);
+        return $count['total'];
+    }
 
     public function getAforisma()
     {
@@ -48,12 +54,18 @@ class DefaultController
 
     public function index(Request $request, Application $app)
     {
-var_dump(UserManager::getSessionToken($app));
+        //count generico
         $count = $this->getCount($app);
 
+        //count utente
+        $current_user = UserManager::getSessionToken($app);
+        $user_count = $current_user ? $this->getUserCount($current_user['user_id'], $app) : 0;
+        //$first_name = $current_user ? $current_user['first_name'] : '';
+
         return $app['twig']->render('Default/index.html.twig', array(
-            'name' => "pippo",
-            'count' => $count
+            'first_name' => 'pippo',
+            'count' => $count,
+            'user_count' => $user_count
         ));
     }
 
@@ -75,10 +87,14 @@ var_dump(UserManager::getSessionToken($app));
 
         $count = $this->getCount($app);
 
+        $current_user = UserManager::getSessionToken($app);
+        $user_count = $current_user ? $this->getUserCount($current_user['user_id'], $app) : 0;
+
         if ($result) {
             return $app->json(array(
-                'message'=> $this->getAforisma(),
-                'count'=>$count
+                'message' => $this->getAforisma(),
+                'count' => $count,
+                'user_count' => $user_count
             ), 201);
         } else {
             return $app->json(array(

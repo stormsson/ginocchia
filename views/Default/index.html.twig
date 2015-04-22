@@ -4,8 +4,6 @@
     <script>
         // This is called with the results from from FB.getLoginStatus().
         function statusChangeCallback(response) {
-            console.log('statusChangeCallback');
-            console.log(response);
             // The response object is returned with a status field that lets the
             // app know the current login status of the person.
             // Full docs on the response object can be found in the documentation
@@ -60,9 +58,7 @@
         //1) l'utente esiste già autenticato nell'app
         //2) l'utente non è stato autenticato
         function checkServerAuth(accessToken) {
-            console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function(response) {
-                console.log('Successful login for: ' + response.name);
                 // call ajax
                 jQuery.ajax({
                     url:"/fb-login",
@@ -70,8 +66,7 @@
                     data:'facebook_access_token='+accessToken,
                     success:function(results) {
                         if(results) {
-                            console.log(results);
-                            $('#status').html('SEI LOGGATO!');
+                            window.location.href = '/';
                         }
                     }
                 });
@@ -169,11 +164,14 @@
             $.ajax('{{ app.url_generator.generate('post_count') }}',{
                 type:'POST',
                 success: function(data, textStatus, jqXHR) {
+
+                    //counter per utente
+                    $('#user-counter').html(data['user_count']);
+
+                    //counter globale
                     $('#counter').html(data['count']);
                     doAnimation(data['count']);
-
                 }
-
             }
             );
         });
@@ -187,7 +185,11 @@
         <div id="status">
         </div>
 
-        <a href="{{ app.url_generator.generate('fb_logout') }}">Logout</a>
+        <a href="{{ app.url_generator.generate('fb_logout') }}">Logout</a><br/>
+
+        {% if user_count %}
+            {{ first_name }}  Hai tirato <span id="user-counter">{{ user_count }}</span> ginocchiate!
+        {% endif %}
     </div>
 
 {% endblock %}

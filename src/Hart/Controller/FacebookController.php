@@ -29,10 +29,8 @@ class FacebookController
                     if(!$app_user) {
                         $sql = "INSERT INTO users (first_name, facebook_id, created_at) VALUES ('$fb_user->first_name', '$fb_user->id', CURRENT_TIMESTAMP);";
                         if($app['db']->executeUpdate($sql)) {
-                            $app_user = array();
-                            $app_user['id'] = $fb_user->id;
-                            $app_user['first_name'] = $fb_user->first_name;
-                            $app_user['facebook_id'] = $fb_user->facebook_id;
+                            $sql = "SELECT * FROM users WHERE facebook_id = ?";
+                            $app_user = $app['db']->fetchAssoc($sql, array($fb_user->id));
                         }
                     }
                 } catch (\Exception $e) {
