@@ -1,10 +1,20 @@
 <?php
 
 namespace Hart\Manager;
+use Hart\Query\UsersQuery;
 
 class UserManager {
 
     protected static $session_key = 'user_id';
+
+    public static function getCurrentUser($app)
+    {
+        $token = self::getSessionToken($app);
+        if($token) {
+            return UsersQuery::getUserById($token['user_id'], $app);
+        }
+        return false;
+    }
 
     public static function getSessionToken($app)
     {

@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Hart\Utils\Utils;
 use Hart\Manager\UserManager;
 use Hart\Query\EventsQuery;
-
 /**
  * per info su come fare query:
  * http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html
@@ -55,18 +54,18 @@ class DefaultController
     public function index(Request $request, Application $app)
     {
         //count generico
-        $count = $this->getCount($app);
+        $args = array(
+            'count' => $this->getCount($app)
+        );
 
         //count utente
-        $current_user = UserManager::getSessionToken($app);
-        $user_count = $current_user ? $this->getUserCount($current_user['user_id'], $app) : 0;
-        //$first_name = $current_user ? $current_user['first_name'] : '';
+        $current_user = UserManager::getCurrentUser($app);
+        if($current_user) {
+            $args['user_count'] = $this->getUserCount($current_user['id'], $app);
+            $args['first_name'] = $current_user['first_name'];
+        }
 
-        return $app['twig']->render('Default/index.html.twig', array(
-            'first_name' => 'pippo',
-            'count' => $count,
-            'user_count' => $user_count
-        ));
+        return $app['twig']->render('Default/index.html.twig', $args);
     }
 
     public function count(Request $request, Application $app)
@@ -87,15 +86,21 @@ class DefaultController
 
         $count = $this->getCount($app);
 
-        $current_user = UserManager::getSessionToken($app);
-        $user_count = $current_user ? $this->getUserCount($current_user['user_id'], $app) : 0;
+        //count generico
+        $args = array(
+            'count' => $this->getCount($app),
+            'message' => $this->getAforisma(),
+        );
+
+        //count utente
+        $current_user = UserManager::getCurrentUser($app);
+        if($current_user) {
+            $args['user_count'] = $this->getUserCount($current_user['id'], $app);
+            $args['first_name'] = $current_user['first_name'];
+        }
 
         if ($result) {
-            return $app->json(array(
-                'message' => $this->getAforisma(),
-                'count' => $count,
-                'user_count' => $user_count
-            ), 201);
+            return $app->json($args, 201);
         } else {
             return $app->json(array(
                 'message'=>'bad request'

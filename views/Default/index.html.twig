@@ -185,9 +185,8 @@
         <div id="status">
         </div>
 
-        <a href="{{ app.url_generator.generate('fb_logout') }}">Logout</a><br/>
-
-        {% if user_count %}
+        {% if user_count is defined %}
+            <a href="{{ app.url_generator.generate('fb_logout') }}">Logout</a><br/>
             {{ first_name }}  Hai tirato <span id="user-counter">{{ user_count }}</span> ginocchiate!
         {% endif %}
     </div>
