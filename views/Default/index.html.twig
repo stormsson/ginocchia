@@ -191,5 +191,13 @@
         {% endif %}
     </div>
 
+    {% if classifica|length > 0 %}
+        <h3>Classifica</h3>
+        <ul id="classifica">
+            {% for user in classifica  %}
+                <li><img src="{{ user.facebook_id|fb_avatar }}" /> - {{ user.first_name }} - {{ user.total }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
 

@@ -7,10 +7,19 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
+/** Routes */
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+/** Twig **/
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
+
+/** Estensioni Twig **/
+$app["twig"] = $app->share($app->extend("twig", function (\Twig_Environment $twig, Silex\Application $app) {
+    $twig->addExtension(new Hart\Twig\fbAvatarExtension($app));
+    return $twig;
+}));
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(

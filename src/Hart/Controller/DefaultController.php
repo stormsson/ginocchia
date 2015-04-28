@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Hart\Utils\Utils;
 use Hart\Manager\UserManager;
 use Hart\Query\EventsQuery;
+use Hart\Query\UsersQuery;
 /**
  * per info su come fare query:
  * http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html
@@ -64,6 +65,9 @@ class DefaultController
             $args['user_count'] = $this->getUserCount($current_user['id'], $app);
             $args['first_name'] = $current_user['first_name'];
         }
+
+        //classifica
+        $args['classifica'] = UsersQuery::getUsersByHits($app);
 
         return $app['twig']->render('Default/index.html.twig', $args);
     }
