@@ -7,3 +7,4 @@
 /nbproject/
 # sublime text configuration files
 *.sublime-*
+.env

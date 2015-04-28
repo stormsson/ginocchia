@@ -2,6 +2,8 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+// load environment from .env
+Dotenv::load(__DIR__.'/../');
 
 // CONFIGURAZIONE
 
@@ -23,17 +25,17 @@ $app["twig"] = $app->share($app->extend("twig", function (\Twig_Environment $twi
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
-        'driver'   => 'pdo_mysql',
-        'dbname' => 'ginocchia',
-        'host' => 'localhost',
-        'user' => 'root',
-        'password' => 'pita725ewq'
+        'driver'   => getenv('DB_DRIVER'),
+        'dbname' => getenv('DB_NAME'),
+        'host' => getenv('DB_HOST'),
+        'user' => getenv('DB_USER'),
+        'password' => getenv('DB_PASSWORD')
     ),
 ));
 
 $app->register(new Silex\Provider\SessionServiceProvider());
 
-$app['debug'] = true;
+$app['debug'] = getenv('APP_DEBUG');
 
 
 // ROTTE
