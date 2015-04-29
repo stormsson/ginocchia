@@ -1,6 +1,6 @@
 {% extends "layout.html.twig" %}
 
-{% block head %}
+{% block foot %}
     <script>
         function statusChangeCallback(response) {
             if (response.status === 'connected') {
@@ -50,18 +50,50 @@
                 });
             });
         }
+
+        function pad(n, width, z) {
+            z = z || '0';
+            n = n + '';
+            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+        }
+
+        function doAnimation(count) {
+            var supercounter_str = pad(count,4);
+
+            for (var i = 0; i < supercounter_str.length; i++) {
+                var altezza = -(80*supercounter_str.charAt(i));
+                $('#digit_' + i).animate({'top': altezza + 'px'},1000);
+            }
+        }
+
+        $(function () {
+            doAnimation({{count}});
+
+            $('#ahi').on('click', function(){
+                $.ajax('{{ app.url_generator.generate('post_count') }}', {
+                    type: 'POST',
+                    success: function (data, textStatus, jqXHR) {
+                        //counter per utente
+                        $('#user-counter').html(data['user_count']);
+
+                        //counter globale
+                        $('#counter').html(data['count']);
+                        doAnimation(data['count']);
+                    }
+                });
+            });
+        });
     </script>
 {% endblock %}
 
 {% block content %}
     <h1>Sono state date <span id="counter">{{ count }}</span> ginocchiate </h1>
-<br/><br/>
+    <br/><br/>
     <a href="{{ app.url_generator.generate('homepage') }}">HOME</a>
     <br/><br/>
     <a href="{{ app.url_generator.generate('history') }}">History</a><br/><br/>
 
-    <a href="#" id="ahi">Anche io :( </a>
-
+    <a href="#" id="ahi">Ho sbattuto il ginocchio</a>
 
     <div id="supercounter">
         <div id="digit_0">
@@ -113,47 +145,6 @@
             <span>9</span>
         </div>
     </div>
-
-
-
-    <script>
-    function pad(n, width, z) {
-      z = z || '0';
-      n = n + '';
-      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-    }
-
-    function doAnimation(count) {
-        var supercounter_str = pad(count,4);
-
-        for (var i = 0; i < supercounter_str.length; i++) {
-            //console.log(supercounter_str.charAt(i));
-            var altezza = -(80*supercounter_str.charAt(i));
-            $('#digit_' + i).animate({'top': altezza + 'px'},1000);
-
-        }
-    }
-
-    $(function(){
-        doAnimation({{count}});
-
-        $('#ahi').on('click',function(){
-            $.ajax('{{ app.url_generator.generate('post_count') }}',{
-                type:'POST',
-                success: function(data, textStatus, jqXHR) {
-
-                    //counter per utente
-                    $('#user-counter').html(data['user_count']);
-
-                    //counter globale
-                    $('#counter').html(data['count']);
-                    doAnimation(data['count']);
-                }
-            }
-            );
-        });
-    });
-    </script>
 
     <div id="login-box">
         <fb:login-button id="fbLogin" scope="public_profile,email" onlogin="checkLoginState();">
