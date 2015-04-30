@@ -5,6 +5,15 @@ require_once __DIR__.'/../vendor/autoload.php';
 // load environment from .env
 Dotenv::load(__DIR__.'/../');
 
+Dotenv::required(array(
+    'DB_DRIVER',
+    'DB_HOST',
+    'DB_NAME',
+    'DB_USER',
+    'DB_PASSWORD',
+    'FB_APP_ID',
+));
+
 // CONFIGURAZIONE
 
 $app = new Silex\Application();
