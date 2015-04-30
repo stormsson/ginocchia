@@ -27,6 +27,15 @@ a:active {
 	margin: 0;
 }
 
+#ahi {
+	text-transform: uppercase;
+	background: #920505;
+	padding: 12px 20px;
+	text-decoration: none;
+	font-size: 25px;
+	font-weight: 100;
+}
+
 #supercounter {
 	border: 1px solid #c00;
 	position: relative;
