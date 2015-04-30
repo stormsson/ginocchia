@@ -6,6 +6,7 @@ body {
 body {
 	background: url('/img/bg.jpg') no-repeat center center #000;
 	background-size: cover;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 	color: #FFF;
 	text-align: center;
 }
@@ -30,47 +31,60 @@ a:active {
 #ahi {
 	text-transform: uppercase;
 	background: #920505;
-	padding: 12px 20px;
+	padding: 20px 30px;
 	text-decoration: none;
+	font-size: 25px;
+	font-weight: 100;
+	display: inline-block;
+}
+
+.desc {
 	font-size: 25px;
 	font-weight: 100;
 }
 
+#supercounter-wrap {
+	background: url('/img/digit-bg.png') no-repeat center 8px transparent;
+	padding: 30px 0;
+}
+
 #supercounter {
-	border: 1px solid #c00;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 	position: relative;
-	width: 500px;
-	height: 80px;
+	width: 434px;
+	height: 160px;
 	overflow: hidden;
+	margin: 0 auto;
+	color: #000;
 }
 #supercounter div {
 	position: absolute;
 	top: 0;
-	width: 60px;
+	width: 97px;
 	height: 800px;
-	background-color: #eee;
 }
 
 #supercounter div#digit_0 {
 	left: 0;
 }
 #supercounter div#digit_1 {
-	left: 70px;
+	left: 110px;
 }
 #supercounter div#digit_2 {
-	left: 140px;
+	left: 220px;
 }
 #supercounter div#digit_3 {
-	left:210px;
+	left: 330px;
 }
 
 #supercounter div span {
 	display: block;
-	width: 80px;
-	height: 80px;
-	font-size: 72px;
+	width: 97px;
+	height: 160px;
+	font-size: 160px;
 	float: left;
 	clear: both;
+	line-height: 155px;
 }
 
 #login-box {

@@ -1,146 +1,62 @@
 {% extends "layout.html.twig" %}
 
-{% block foot %}
-    <script>
-        function statusChangeCallback(response) {
-            if (response.status === 'connected') {
-                checkServerAuth(response.authResponse.accessToken);
-            }
-        }
-
-        function checkLoginState() {
-            FB.getLoginStatus(function(response) {
-                statusChangeCallback(response);
-            });
-        }
-
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : '1433159156980399',
-                cookie     : true,  // enable cookies to allow the server to access
-                                    // the session
-                xfbml      : true,  // parse social plugins on this page
-                version    : 'v2.2' // use version 2.2
-            });
-        };
-
-        // Load the SDK asynchronously
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-
-        // effettua il check dell'autenticazione lato server. I casi sono i seguenti:
-        // 1) l'utente esiste già autenticato nell'app
-        // 2) l'utente non è stato autenticato
-        function checkServerAuth(accessToken) {
-            FB.api('/me', function(response) {
-                jQuery.ajax({
-                    url: "/fb-login",
-                    type: 'POST',
-                    data: 'facebook_access_token='+accessToken,
-                    success: function (results) {
-                        if (results) {
-                            window.location.href = '/';
-                        }
-                    }
-                });
-            });
-        }
-
-        function pad(n, width, z) {
-            z = z || '0';
-            n = n + '';
-            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-        }
-
-        function doAnimation(count) {
-            var supercounter_str = pad(count,4);
-
-            for (var i = 0; i < supercounter_str.length; i++) {
-                var altezza = -(80*supercounter_str.charAt(i));
-                $('#digit_' + i).animate({'top': altezza + 'px'},1000);
-            }
-        }
-
-        $(function () {
-            doAnimation({{count}});
-
-            $('#ahi').on('click', function(){
-                $.ajax('{{ app.url_generator.generate('post_count') }}', {
-                    type: 'POST',
-                    success: function (data, textStatus, jqXHR) {
-                        //counter per utente
-                        $('#user-counter').html(data['user_count']);
-
-                        //counter globale
-                        $('#counter').html(data['count']);
-                        doAnimation(data['count']);
-                    }
-                });
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block content %}
+    <div id="supercounter-wrap">
+        <div id="supercounter">
+            <div id="digit_0">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+            </div>
+            <div id="digit_1">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+            </div>
+            <div id="digit_2">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+            </div>
+            <div id="digit_3">
+                <span>0</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+            </div>
+        </div>
+    </div>
+
     <p class="desc">Clicca se anche tu hai appena tirato una sonora ginocchiata alla cassettiera</p>
 
     <a href="#" id="ahi">Ho sbattuto il ginocchio</a>
-
-    <div id="supercounter">
-        <div id="digit_0">
-            <span>0</span>
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-            <span>7</span>
-            <span>8</span>
-            <span>9</span>
-        </div>
-        <div id="digit_1">
-            <span>0</span>
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-            <span>7</span>
-            <span>8</span>
-            <span>9</span>
-        </div>
-        <div id="digit_2">
-            <span>0</span>
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-            <span>7</span>
-            <span>8</span>
-            <span>9</span>
-        </div>
-        <div id="digit_3">
-            <span>0</span>
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-            <span>7</span>
-            <span>8</span>
-            <span>9</span>
-        </div>
-    </div>
 
     <div id="login-box">
         <fb:login-button id="fbLogin" scope="public_profile,email" onlogin="checkLoginState();">
